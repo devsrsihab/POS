@@ -30,6 +30,7 @@
         <div class="form-group">
             <label for="photo">Photo</label>
             <input name="photo" type="file" class="form-control" id="photo" >
+            <img style="height:90px;margin-top:15px" src="{{ asset('uploads/Employees/'. $employe->photo) }}" alt="">
             <div class="photo-error text-danger error d-none "></div>
         </div>
         <div class="form-group">

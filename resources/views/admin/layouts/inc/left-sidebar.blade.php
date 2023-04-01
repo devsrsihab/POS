@@ -23,11 +23,15 @@
                     <div id="sidebar-menu">
                         <ul>
                             <li>
-                                <a href="index.html" class="waves-effect active"><i class="fa-solid fa-house"></i><span> Dashboard </span></a>
+                                <a href="{{ route('dashboard') }}" class="waves-effect {{ Request::is('dashboard') ? 'active' : '' }}"><i class="fa-solid fa-house"></i><span> Dashboard </span></a>
                             </li>
 
                             <li>
-                                <a href="{{ route('employees.index') }}" class="waves-effect active"><i class="fa-solid fa-user-plus"></i><span>Employees</span></a>
+                                <a href="{{ route('employees.index') }}" class="waves-effect {{ Request::is('employees') ? 'active' : '' }} "><i class="fa-solid fa-user-plus"></i><span>Employees</span></a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('suppliers.index') }}" class="waves-effect {{ Request::is('suppliers') ? 'active' : '' }} "><i class="fas fa-industry"></i><span>Suppliers</span></a>
                             </li>
 
 
