@@ -34,6 +34,10 @@
                                 <a href="{{ route('suppliers.index') }}" class="waves-effect {{ Request::is('suppliers') ? 'active' : '' }} "><i class="fas fa-industry"></i><span>Suppliers</span></a>
                             </li>
 
+                            <li>
+                                <a href="{{ route('advanceSalaries.index') }}" class="waves-effect {{ Request::is('advanceSalaries') ? 'active' : '' }} "><i class="fa-regular fa-money-bill-1"></i><span>Advance Salaries</span></a>
+                            </li>
+
 
                         </ul>
                         <div class="clearfix"></div>

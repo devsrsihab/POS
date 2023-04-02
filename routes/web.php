@@ -5,6 +5,7 @@ use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\admin\EmployeController;
 use App\Http\Controllers\admin\SupplierController;
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\AdvanceSalaryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,7 @@ Route::middleware(['adminAuth'])->group(function(){
     Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
     Route::resource('/employees',EmployeController::class);
     Route::resource('/suppliers',SupplierController::class);
+    Route::resource('/advanceSalaries',AdvanceSalaryController::class);
 });
 
 //Auth
