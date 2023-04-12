@@ -38,6 +38,10 @@
                                 <a href="{{ route('advanceSalaries.index') }}" class="waves-effect {{ Request::is('advanceSalaries') ? 'active' : '' }} "><i class="fa-regular fa-money-bill-1"></i><span>Advance Salaries</span></a>
                             </li>
 
+                            <li>
+                                <a href="{{ route('categories.index') }}" class="waves-effect {{ Request::is('categories') ? 'active' : '' }} "><i class="fa-solid fa-grip"></i><span>Categories</span></a>
+                            </li>
+
 
                         </ul>
                         <div class="clearfix"></div>
