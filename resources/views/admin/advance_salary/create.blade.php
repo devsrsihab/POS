@@ -5,7 +5,7 @@
         <div class="form-group">
             <label for="employe_id">Name</label>
             <select class="form-control" id="employe_id" name="employe_id">
-                <option selected disabled>Select Type</option>
+                <option selected disabled>Select Name</option>
                 @forelse ($employees as $employe )
 
                 <option value="{{ $employe->id }}">{{ $employe->name }}</option>
@@ -20,34 +20,26 @@
             <label for="month">Month</label>
             <select class="form-control" id="month" name="month">
                 <option selected disabled>Select Month</option>
-                <option value="1">January</option>
-                <option value="2">February</option>
-                <option value="3">March</option>
-                <option value="4">April</option>
-                <option value="5">May</option>
-                <option value="6">Jun</option>
-                <option value="7">July</option>
-                <option value="8">August</option>
-                <option value="9">September</option>
-                <option value="10">Octobor</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
+
+                @foreach ($remainingMonths as $remainingMonth )
+                <option value=" {{ date('n', strtotime($remainingMonth)) }} ">{{ $remainingMonth }}</option>
+                    
+                @endforeach
+               
 
             </select>
             <div class="month-error text-danger error d-none "></div>
         </div>
         <div class="form-group">
-            <label for="year">Year</label>
-            <input name="year" type="text" class="form-control" id="year" placeholder="Enter Year">
-            <div class="year-error text-danger error d-none "></div>
+            <input name="year" type="hidden" class="form-control" id="year" value="{{ date('Y') }}">
         </div>
         <div class="form-group">
-            <label for="advance_salary">advance_salary</label>
+            <label for="advance_salary">Amount</label>
             <input name="advance_salary" type="text" class="form-control" id="advance_salary" placeholder="Enter advance_salary">
             <div class="advance_salary-error text-danger error d-none "></div>
         </div>
 
-        <button type="submit" class="btn btn-purple waves-effect waves-light">Submit</button>
         <button type="button" class="btn  bootbox-close-button  btn-danger waves-effect waves-light">Cancel</button>
+        <button type="submit" class="btn btn-purple waves-effect waves-light">Submit</button>
     </form>
 </div><!-- panel-body -->

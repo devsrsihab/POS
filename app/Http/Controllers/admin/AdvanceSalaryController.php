@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\AdvancedSalary;
 use Illuminate\Support\Facades\DB;
@@ -38,11 +39,47 @@ class AdvanceSalaryController extends Controller
      */
     public function create()
     {
-        $data['employees'] = DB::table('employees')
+
+
+
+        /* =================================================================
+                            my practice
+        ======================================================================*/
+
+        //current date
+        $currentDate  = Carbon::now();
+        //end year date
+        $endOfYear    = Carbon::parse('January 1')->addYear()->subDay();
+        //current month
+        $currentMonth = Carbon::now()->format('F');
+        //reamin months
+        $remainingMonths= [];
+
+        
+        //loop untile the $currentDate > $endOfYear
+        while ($currentDate < $endOfYear) {
+
+             $remainingMonth = $currentDate->format('F');
+
+            //skip current month
+            if ($currentMonth === $remainingMonth) {
+                $currentDate->addMonth();
+                continue;
+            }
+
+            //if $currentMonth !== $remainingMonth then run this code
+            $remainingMonths[] = $remainingMonth;
+            $currentDate->addMonth();
+            
+        }
+
+
+
+        $employees = DB::table('employees')
                              ->where('employees.status',1)
                              ->select('employees.name','employees.id')
                              ->get();
-        return view('admin.advance_salary.create',$data);
+        return view('admin.advance_salary.create',compact('employees','remainingMonths'));
     }
 
     /**
@@ -50,7 +87,8 @@ class AdvanceSalaryController extends Controller
      */
     public function store(Request $request)
     {
-        //  dd($request->all());
+
+        //dd($request->all());
 
         $validator = Validator::make($request->all(),[
             'employe_id'     => 'required|numeric',
@@ -67,22 +105,54 @@ class AdvanceSalaryController extends Controller
                 'errors' => $validator->messages(),
             ]);
         }
-        else
-        {
-            $advanceSalarie                 = new AdvancedSalary;
-            $advanceSalarie->employe_id     = $request->employe_id;
-            $advanceSalarie->month          = $request->month;
-            $advanceSalarie->year           = $request->year;
-            $advanceSalarie->advance_salary = $request->advance_salary;
-            $advanceSalarie->save();
 
-            //return 
-            return response()->json([
-                'status' => 200,
-                'message' => 'Advance Salarie Paid Successfully'
-            ]);
-            
-        }
+            //employe payment taken coutn
+            $advanced_salaries = DB::table('advanced_salaries')
+                                 ->where('employe_id',$request->employe_id)
+                                 ->count();
+            //duplicate
+            $duplicate_month = DB::table('advanced_salaries')
+                                ->where('month',$request->month)
+                                ->count();
+
+            // dd($duplicate_month);
+
+            if ($advanced_salaries >=4 ) {
+
+                //The employee has already received the maximum advance paid
+                return response()->json([
+                    'status' => 401,
+                    'msgTitle' => 'Employee Took 3 Advances!',
+                    'message' => 'The employee has already received the maximum number of advance salaries for the year.'
+                ]);
+
+            } 
+            //check is month duplicate
+            elseif ($duplicate_month >=1)
+            {
+                return response()->json([
+                    'status' => 402,
+                    'msgTitle' => 'Already Paid in This Month!',
+                    'message' => 'The employee has already received this month Advance.'
+                ]);
+            }
+            else{
+
+                
+                $advanceSalarie                 = new AdvancedSalary;
+                $advanceSalarie->employe_id     = $request->employe_id;
+                $advanceSalarie->month          = $request->month;
+                $advanceSalarie->year           = $request->year;
+                $advanceSalarie->advance_salary = $request->advance_salary;
+                $advanceSalarie->save();
+                //already advance paid 
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Advanced Salary Given Successfully'
+                ]);
+
+            }
+
         
 
     }
@@ -92,7 +162,14 @@ class AdvanceSalaryController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $advanceSalary = AdvancedSalary::find($id);
+
+        $employe = DB::table('employees')
+                         ->where('id',$advanceSalary->employe_id)
+                         ->select('employees.name','employees.id')
+                         ->first($advanceSalary->$advanceSalary);
+
+        return view('admin.advance_salary.show',compact('advanceSalary','employe'));
     }
 
     /**
@@ -100,8 +177,42 @@ class AdvanceSalaryController extends Controller
      */
     public function edit(string $id)
     {
-        $data['employe'] = AdvancedSalary::find($id);
-        return view('admin.advance_salary.edit',$data);
+                //current date
+                $currentDate  = Carbon::now();
+                //end year date
+                $endOfYear    = Carbon::parse('January 1')->addYear()->subDay();
+                //current month
+                $currentMonth = Carbon::now()->format('F');
+                //reamin months
+                $remainingMonths= [];
+        
+                
+                //loop untile the $currentDate > $endOfYear
+                while ($currentDate < $endOfYear) {
+        
+                     $remainingMonth = $currentDate->format('F');
+        
+                    //skip current month
+                    if ($currentMonth === $remainingMonth) {
+                        $currentDate->addMonth();
+                        continue;
+                    }
+        
+                    //if $currentMonth !== $remainingMonth then run this code
+                    $remainingMonths[] = $remainingMonth;
+                    $currentDate->addMonth();
+                    
+                }
+
+
+        $advanceSalary = AdvancedSalary::find($id);
+
+        //employees
+        $employees = DB::table('employees')
+        ->where('employees.status',1)
+        ->select('employees.name','employees.id')
+        ->get();
+        return view('admin.advance_salary.edit',compact('employees','remainingMonths','advanceSalary'));
     }
 
     /**
@@ -112,7 +223,7 @@ class AdvanceSalaryController extends Controller
         
         $validator = Validator::make($request->all(),[
             'employe_id'     => 'required|numeric',
-            'month'          => 'required|numeric|digits:2',
+            'month'          => 'required|numeric|digits_between:1,2',
             'year'           => 'required|numeric|digits:4',
             'advance_salary' => 'required|numeric',
         ]);
@@ -126,22 +237,17 @@ class AdvanceSalaryController extends Controller
         }
         else
         {
-            $employee             = AdvancedSalary::find($id);
-            $employee->name       = $request->name;
-            $employee->phone      = $request->phone;
-            $employee->email      = $request->email;
-            $employee->adress     = $request->adress;
-            $employee->experience = $request->experience;
-            $employee->salary     = $request->salary;
-            $employee->vacation   = $request->vacation;
-            $employee->city       = $request->city;
-
+            $employee                 = AdvancedSalary::find($id);
+            $employee->employe_id     = $request->employe_id;
+            $employee->month          = $request->month;
+            $employee->year           = $request->year;
+            $employee->advance_salary = $request->advance_salary;
             $employee->save();
 
             //return 
             return response()->json([
                 'status' => 200,
-                'message' => 'Employee Updated Successfully'
+                'message' => 'Advanced Salary  Updated Successfully'
             ]);
             
         }
@@ -152,14 +258,14 @@ class AdvanceSalaryController extends Controller
      */
     public function destroy(string $id)
     {
-        $employee = AdvancedSalary::find($id);
+        $advancedSalary = AdvancedSalary::find($id);
 
-        if ($employee) {
-            $employee->status = 0;
-            $employee->save();
-            return response()->json(['status'=>200,'message'=>'Employe Deleted Successfully']);
+        if ($advancedSalary) {
+            $advancedSalary->status = 0;
+            $advancedSalary->save();
+            return response()->json(['status'=>200,'message'=>'Advanced Salary Deleted Successfully']);
         } else {
-            return response()->json(['status'=>404,'message'=>'Employe Not found']);
+            return response()->json(['status'=>404,'message'=>'Advanced Salary Not found']);
 
         }
         

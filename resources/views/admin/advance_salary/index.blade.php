@@ -42,7 +42,7 @@
                                             <tr>
                                                 <td>{{  $advanceSalarie->id }}</td>
                                                 <td>{{  $advanceSalarie->name }}</td>
-                                                <td>{{  $advanceSalarie->month }}</td>
+                                                <td>{{  \Carbon\Carbon::createFromDate(null,$advanceSalarie->month,null)->format('F') }}</td>
                                                 <td>{{  $advanceSalarie->year }}</td>
                                                 <td>{{  $advanceSalarie->advance_salary }}</td>
                                                 <td>
@@ -50,9 +50,11 @@
 
                                                 
                                                 </td>
-    
+
                                                 <td>
                                                     <a formActionUrl="{{ route('advanceSalaries.update',$advanceSalarie->id) }}" href="{{ route('advanceSalaries.edit',$advanceSalarie->id) }}" class="bootModal btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a>
+
+                                                    <a title="Show" href="{{ route('advanceSalaries.show',$advanceSalarie->id) }}" class="bootModal btn btn-primary"><i class="fa-solid fa-eye"></i></a>
 
                                                     <form action="{{ route('advanceSalaries.destroy',$advanceSalarie->id) }}" delete-link="{{ route('advanceSalaries.destroy',$advanceSalarie->id) }}" class="delete-form" style="display:inline-block;">
                                                     @csrf
@@ -133,6 +135,8 @@
             $(document).on('submit',formId, function (e) {
                 e.preventDefault();
 
+                alert(formActionUrl);
+
 
                 // form data object
                 let formData = new FormData($(formId)[0]);
@@ -158,7 +162,16 @@
                           $('.advance_salary-error').text(response.errors.advance_salary);
 
                             
+
+
+
                         }
+                        else if(response.status === 401 || response.status === 402)
+                        {
+                            toastr.error(response.message, response.msgTitle);
+
+                        }
+
                         else
                         {
                             dialog.modal('hide');
