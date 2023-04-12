@@ -31,12 +31,8 @@
                                                 <th>Name</th>
                                                 <th>Phone</th>
                                                 <th>Email</th>
-                                                <th>Adress</th>
-                                                <th>Experience</th>
                                                 <th>Photo</th>
                                                 <th>Salary</th>
-                                                <th>Vacation</th>
-                                                <th>City</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -48,14 +44,12 @@
                                                 <td>{{  $employe->name }}</td>
                                                 <td>{{  $employe->phone }}</td>
                                                 <td>{{  $employe->email }}</td>
-                                                <td>{{  $employe->adress }}</td>
-                                                <td>{{  $employe->experience }}</td>
                                                 <td><img style="height: 35px; object-fit:cover" src="{{ asset('uploads/employees/'.$employe->photo) }}" alt="employe-photo"></td>
                                                 <td>{{ $employe->salary }}</td>
-                                                <td>{{ $employe->vacation }}</td>
-                                                <td>{{ $employe->city }}</td>
                                                 <td>
                                                     <a formActionUrl="{{ route('employees.update',$employe->id) }}" href="{{ route('employees.edit',$employe->id) }}" class="bootModal btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a>
+
+                                                    <a href="{{ route('employees.show',$employe->id) }}" class="bootModal btn btn-primary"><i class="fa-solid fa-eye"></i></a>
 
                                                     <form action="{{ route('employees.destroy',$employe->id) }}" delete-link="{{ route('employees.destroy',$employe->id) }}" class="delete-form" style="display:inline-block;">
                                                     @csrf

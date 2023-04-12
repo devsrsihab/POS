@@ -31,11 +31,7 @@
                                                 <th>Name</th>
                                                 <th>Phone</th>
                                                 <th>Email</th>
-                                                <th>Adress</th>
-                                                <th>Supplier Type</th>
-                                                <th>Shop Name</th>
                                                 <th>Photo</th>
-                                                <th>City</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -47,21 +43,14 @@
                                                 <td>{{  $supplier->name }}</td>
                                                 <td>{{  $supplier->phone }}</td>
                                                 <td>{{  $supplier->email }}</td>
-                                                <td>{{  $supplier->adress }}</td>
-                                                <td>
-                                                    {{ $supplier->type === 1 ? 'Distrubutor' : ''}}
-                                                    {{ $supplier->type === 2 ? 'Whole Seller' : ''}}
-                                                    {{ $supplier->type === 3 ? 'Brochure' : '' }}
-                                                    
-                                                </td>
-                                                <td>{{ $supplier->shop }}</td>
+                                                
                                                 <td><img style="height: 35px; object-fit:cover" src="{{ asset('uploads/Suppliers/'.$supplier->photo) }}" alt="employe-photo"></td>
-                                                <td>{{ $supplier->city }}</td>
                                                 <td>
-                                                    <a title="Show" href="{{ route('suppliers.show',$supplier->id) }}" class="bootModal btn btn-primary"><i class="fa-solid fa-eye"></i></a>
-
+                                                    
                                                     <a title="Edit" formActionUrl="{{ route('suppliers.update',$supplier->id) }}" href="{{ route('suppliers.edit',$supplier->id) }}" class="bootModal btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a>
-
+                                                    
+                                                    <a title="Show" href="{{ route('suppliers.show',$supplier->id) }}" class="bootModal btn btn-primary"><i class="fa-solid fa-eye"></i></a>
+                                                    
                                                     <form action="{{ route('suppliers.destroy',$supplier->id) }}" delete-link="{{ route('suppliers.destroy',$supplier->id) }}" class="delete-form" style="display:inline-block;">
                                                     @csrf
                                                     @method('DELETE')

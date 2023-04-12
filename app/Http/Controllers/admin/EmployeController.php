@@ -99,7 +99,8 @@ class EmployeController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $employee = Employee::find($id);
+        return view('admin.employees.show',compact('employee'));
     }
 
     /**
