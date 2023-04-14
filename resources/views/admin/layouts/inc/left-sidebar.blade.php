@@ -42,6 +42,10 @@
                                 <a href="{{ route('categories.index') }}" class="waves-effect {{ Request::is('categories') ? 'active' : '' }} "><i class="fa-solid fa-grip"></i><span>Categories</span></a>
                             </li>
 
+                            <li>
+                                <a href="{{ route('products.index') }}" class="waves-effect {{ Request::is('products') ? 'active' : '' }} "><i class="fa-solid fa-dumpster"></i><span>Products</span></a>
+                            </li>
+
 
                         </ul>
                         <div class="clearfix"></div>

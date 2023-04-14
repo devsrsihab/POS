@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\admin\EmployeController;
+use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\SupplierController;
 use App\Http\Controllers\admin\CategorieController;
 use App\Http\Controllers\admin\DashboardController;
@@ -30,6 +31,7 @@ Route::middleware(['adminAuth'])->group(function(){
     Route::resource('/suppliers',SupplierController::class);
     Route::resource('/advanceSalaries',AdvanceSalaryController::class);
     Route::resource('/categories',CategorieController::class);
+    Route::resource('/products',ProductController::class);
 });
 
 //Auth
@@ -40,3 +42,6 @@ Route::post('/login',[AuthController::class,'loginAction'])->name('login');
 Route::get('/logout',[AuthController::class,'logOut'])->name('logOut');
 //make user
 Route::get('/makeUser',[AuthController::class,'makeUser'])->name('makeUser');
+
+
+//learn hunter tutorial Number: 08
