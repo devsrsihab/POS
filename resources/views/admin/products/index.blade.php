@@ -18,7 +18,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading mb-4">
                         <h3 class="panel-title pull-left">Products</h3>
-                        <a title="Create" formActionUrl="{{ route('suppliers.store') }}" href="{{ route('suppliers.create') }}" class="bootModal btn btn-primary pull-right">Add Products</a>
+                        <a title="Create" formActionUrl="{{ route('products.store') }}" href="{{ route('products.create') }}" class="bootModal btn btn-primary pull-right">Add Products</a>
                     </div>
                     <div class="panel-body mt-5">
                         <div class="row">
@@ -28,10 +28,10 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Name</th>
-                                                <th>Phone</th>
-                                                <th>Email</th>
-                                                <th>Photo</th>
+                                                <th>Product Name</th>
+                                                <th>Product Garage</th>
+                                                <th>Product Route</th>
+                                                <th>Product Image</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -39,19 +39,19 @@
                                             @forelse ($products as $product )
                       
                                             <tr>
-                                                <td>{{  $supplier->id }}</td>
-                                                <td>{{  $supplier->name }}</td>
-                                                <td>{{  $supplier->phone }}</td>
-                                                <td>{{  $supplier->email }}</td>
+                                                <td>{{  $product->id }}</td>
+                                                <td>{{  $product->product_name }}</td>
+                                                <td>{{  $product->product_garage }}</td>
+                                                <td>{{  $product->product_route }}</td>
                                                 
-                                                <td><img style="height: 35px; object-fit:cover" src="{{ asset('uploads/Suppliers/'.$supplier->photo) }}" alt="employe-photo"></td>
+                                                <td><img style="height: 35px; object-fit:cover" src="{{ asset('uploads/Products/'.$product->product_image) }}" alt="employe-photo"></td>
                                                 <td>
                                                     
-                                                    <a title="Edit" formActionUrl="{{ route('suppliers.update',$supplier->id) }}" href="{{ route('suppliers.edit',$supplier->id) }}" class="bootModal btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                    <a title="Edit" formActionUrl="{{ route('products.update',$product->id) }}" href="{{ route('products.edit',$product->id) }}" class="bootModal btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a>
                                                     
-                                                    <a title="Show" href="{{ route('suppliers.show',$supplier->id) }}" class="bootModal btn btn-primary"><i class="fa-solid fa-eye"></i></a>
+                                                    <a title="Show" href="{{ route('products.show',$product->id) }}" class="bootModal btn btn-primary"><i class="fa-solid fa-eye"></i></a>
                                                     
-                                                    <form action="{{ route('suppliers.destroy',$supplier->id) }}" delete-link="{{ route('suppliers.destroy',$supplier->id) }}" class="delete-form" style="display:inline-block;">
+                                                    <form action="{{ route('products.destroy',$product->id) }}" delete-link="{{ route('products.destroy',$product->id) }}" class="delete-form" style="display:inline-block;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <a  href="" class=" btn btn-danger"><i class="fa-regular fa-trash-can"></i></a>
@@ -149,18 +149,16 @@
                           $('.error').html('');
                           $('.error').removeClass('d-none');
 
-                          $('.name-error').text(response.errors.name);
-                          $('.phone-error').text(response.errors.phone);
-                          $('.email-error').text(response.errors.email);
-                          $('.adress-error').text(response.errors.adress);
-                          $('.photo-error').text(response.errors.photo); 
-                          $('.city-error').text(response.errors.city);
-                          $('.type-error').text(response.errors.type);
-                          $('.shop-error').text(response.errors.shop);
-                          $('.bank_name-error').text(response.errors.bank_name);
-                          $('.branch_name-error').text(response.errors.branch_name);
-                          $('.account_holder-error').text(response.errors.account_holder);
-                          $('.account_number-error').text(response.errors.account_number);
+                          $('.product_name-error').text(response.errors.product_name);
+                          $('.cat_id-error').text(response.errors.cat_id);
+                          $('.sup_id-error').text(response.errors.sup_id);
+                          $('.product_garage-error').text(response.errors.product_garage); 
+                          $('.product_route-error').text(response.errors.product_route);
+                          $('.product_image-error').text(response.errors.product_image);
+                          $('.buy_date-error').text(response.errors.buy_date);
+                          $('.expire_date-error').text(response.errors.expire_date);
+                          $('.buying_price-error').text(response.errors.buying_price);
+                          $('.selling_price-error').text(response.errors.selling_price);
                             
                         }
                         else
@@ -168,8 +166,8 @@
                             dialog.modal('hide');
                           $('.error').html('');
                           $('.error').addClass('d-none');
-                          formId === '#supplierCreateForm' ? msg = 'Created' : msg = 'Updated';
-                          toastr.success('Supplier Successfullly ' +msg +'!', 'Supplier '+ msg + '');
+                          formId === '#productCreateForm' ? msg = 'Created' : msg = 'Updated';
+                          toastr.success('Product Successfullly ' +msg +'!', 'Product '+ msg + '');
                           $('.table').load(location.href+' .table');
         
                             
@@ -209,12 +207,13 @@
 
                         if (response.status===200)
                         {
-                            formId !== '#employeCreateForm' || formId !== '#employeUpdateForm' ? msg = 'Deleted' : msg = '';
-                          toastr.success('Employee Successfullly ' +msg +'!', 'Employee '+ msg + '');
+                            formId !== '#productCreateForm' || formId !== '#productUpdateForm' ? msg = 'Deleted' : msg = '';
+                          toastr.success('Product Successfullly ' +msg +'!', 'Product '+ msg + '');
                           $('.table').load(location.href+' .table');
                             
                         } else {
-                            
+                            toastr.success('Product Id Not Found!', 'Product 404!');
+
                         }
                         
                     }

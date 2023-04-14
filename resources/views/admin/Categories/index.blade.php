@@ -101,7 +101,7 @@
 
                         //bootmodal
                          dialog = bootbox.dialog({
-                            title: 'Employe '+title,
+                            title: 'Categorie '+title,
                             message: "<div class='modalContent'></div>",
                             size: 'large',
 
@@ -139,15 +139,8 @@
                           $('.error').html('');
                           $('.error').removeClass('d-none');
 
-                          $('.name-error').text(response.errors.name);
-                          $('.phone-error').text(response.errors.phone);
-                          $('.email-error').text(response.errors.email);
-                          $('.adress-error').text(response.errors.adress);
-                          $('.experience-error').text(response.errors.experience);
-                          $('.photo-error').text(response.errors.photo);
-                          $('.salary-error').text(response.errors.salary);
-                          $('.vacation-error').text(response.errors.vacation);
-                          $('.city-error').text(response.errors.city);
+                          $('.cate_name-error').text(response.errors.cate_name);
+       
                             
                         }
                         else
@@ -155,8 +148,8 @@
                             dialog.modal('hide');
                           $('.error').html('');
                           $('.error').addClass('d-none');
-                          formId === '#employeCreateForm' ? msg = 'Created' : msg = 'Updated';
-                          toastr.success('Employee Successfullly ' +msg +'!', 'Employee '+ msg + '');
+                          formId === '#categorieCreateForm' ? msg = 'Created' : msg = 'Updated';
+                          toastr.success('Categorie Successfullly ' +msg +'!', 'Categorie '+ msg + '');
                           $('.table').load(location.href+' .table');
         
                             
@@ -196,8 +189,8 @@
 
                         if (response.status===200)
                         {
-                            formId !== '#employeCreateForm' || formId !== '#employeUpdateForm' ? msg = 'Deleted' : msg = '';
-                          toastr.success('Employee Successfullly ' +msg +'!', 'Employee '+ msg + '');
+                            formId !== '#categorieCreateForm' || formId !== '#categorieUpdateForm' ? msg = 'Deleted' : msg = '';
+                          toastr.success('Categorie Successfullly ' +msg +'!', 'Categorie '+ msg + '');
                           $('.table').load(location.href+' .table');
                             
                         } else {

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\admin;
 
 use App\Models\Product;
+use App\Models\Supplier;
+use App\Models\Categorie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -31,7 +34,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.products.create');
+        $data['categories'] = Categorie::where('status',1)->select('cate_name','id')->get();
+        $data['suppliers']  = Supplier ::where('status',1)->select('name','id')->get();
+
+        return view('admin.products.create',$data);
     }
 
     /**
@@ -39,21 +45,29 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //  dd($request->all());
-
+  
+        //dd($request->all());
         $validator = Validator::make($request->all(),[
             'product_name'   => 'required|string',
             'cat_id'         => 'required|numeric',
             'sup_id'         => 'required|numeric',
-            'product_code'   => 'required|numeric',
             'product_garage' => 'required|string',
             'product_route'  => 'required|string',
             'product_image'  => 'required|image|mimes:jpeg,png,jpg|max:2048', //max s 2mb,
             'buy_date'       => 'required|string',
-            'expire_date'    => 'required|string',
+            'expire_date'    => ['required','string',
+                                    function ($attribute, $value, $fail) use ($request) {
+                if (strtotime($value) <= strtotime($request->buy_date)) {
+                    $fail('The ' . $attribute . ' must be greater than the Buy Date.');
+                }
+            }],
             'buying_price'   => 'required|numeric',
             'selling_price'  => 'required|numeric',
         ]);
+
+        //
+        $randomInterger = substr(time(),-4);
+        $productCode    = $request->cat_id.$request->sup_id.$randomInterger;
 
         if ($validator->fails())
         {
@@ -68,7 +82,7 @@ class ProductController extends Controller
             $Product->product_name   = $request->product_name;
             $Product->cat_id         = $request->cat_id;
             $Product->sup_id         = $request->sup_id;
-            $Product->product_code   = $request->product_code;
+            $Product->product_code   = $productCode;
             $Product->product_garage = $request->product_garage;
             $Product->product_route  = $request->product_route;
             $Product->buy_date       = $request->buy_date;
@@ -101,7 +115,16 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $data['supplier'] = Product::find($id);
+        // $data['products'] = Product::find($id);
+        // $data['categorie'] = Categorie::where('id',$data['products']->cat_id)->select('cate_name')->get();
+        // $data['supplier']  = Supplier ::where('id',$data['products']->sup_id)->select('name')->get();
+
+        $data['products'] = DB::table('products')
+            ->join('categories', 'products.cat_id', '=', 'categories.id')
+            ->join('suppliers', 'products.sup_id', '=', 'suppliers.id')
+            ->select('products.*', 'categories.cate_name', 'suppliers.name')
+            ->where('products.id', $id)
+            ->first();
         return view('admin.products.show',$data);
     }
 
@@ -110,7 +133,9 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $data['supplier'] = Product::find($id);
+        $data['categories'] = Categorie::where('status',1)->select('cate_name','id')->get();
+        $data['suppliers']  = Supplier ::where('status',1)->select('name','id')->get();
+        $data['product'] = Product::find($id);
         return view('admin.products.edit',$data);
     }
 
@@ -124,10 +149,9 @@ class ProductController extends Controller
             'product_name'   => 'required|string',
             'cat_id'         => 'required|numeric',
             'sup_id'         => 'required|numeric',
-            'product_code'   => 'required|numeric',
             'product_garage' => 'required|string',
             'product_route'  => 'required|string',
-            'product_image'  => 'required|image|mimes:jpeg,png,jpg|max:2048', //max s 2mb,
+            'product_image'  => 'image|mimes:jpeg,png,jpg|max:2048', //max s 2mb,
             'buy_date'       => 'required|string',
             'expire_date'    => 'required|string',
             'buying_price'   => 'required|numeric',
@@ -143,19 +167,26 @@ class ProductController extends Controller
         }
         else
         {
-            $Product                 = new Product;
+            $Product                 = Product::find($id);
             $Product->product_name   = $request->product_name;
             $Product->cat_id         = $request->cat_id;
             $Product->sup_id         = $request->sup_id;
-            $Product->product_code   = $request->product_code;
             $Product->product_garage = $request->product_garage;
             $Product->product_route  = $request->product_route;
             $Product->buy_date       = $request->buy_date;
             $Product->expire_date    = $request->expire_date;
             $Product->buying_price   = $request->buying_price;
             $Product->selling_price  = $request->selling_price;
+
             //import photo 
             if ($request->hasfile('product_image')) {
+
+                //existing delete
+                $path = 'uploads/Products/'.$Product->product_image;
+                if (File::exists($path)) {
+                    File::delete($path);
+                }
+
                 $file            = $request->file('product_image');
                 $extention       = $file->getClientOriginalExtension();
                 $fileName        = time() . '.' . $extention;

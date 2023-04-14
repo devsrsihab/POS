@@ -1,5 +1,5 @@
 <div class="panel-body">
-    <form id="employeUpdateForm" method="post">
+    <form id="categorieUpdateForm" method="post">
         @csrf
         @method('PUT')
         <div class="form-group">

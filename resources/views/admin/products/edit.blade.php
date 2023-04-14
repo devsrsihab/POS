@@ -1,75 +1,90 @@
 <div class="panel-body">
-    <form id="employeUpdateForm" method="post">
+    <form id="productUpdateForm" method="post">
         @csrf
         @method('PUT')
+
+
         <div class="form-group">
-            <label for="name">Name</label>
-            <input name="name" type="text" class="form-control" id="name" placeholder="Enter Name" value="{{ $supplier->name }}">
-            <div class="name-error text-danger error d-none "></div>
+            <label for="name">Product Name</label>
+            <input name="product_name" type="text" class="form-control" id="product_name" placeholder="Enter Product Name" value="{{ $product->product_name }}">
+            <div class="product_name-error text-danger error d-none "></div>
         </div>
+
         <div class="form-group">
-            <label for="email">Email</label>
-            <input name="email" type="text" class="form-control" id="email" placeholder="Enter email" value="{{ $supplier->email }}">
-            <div class="email-error text-danger error d-none "></div>
+            <label for="phone">Product Garage</label>
+            <input name="product_garage" type="text" class="form-control" id="product_garage" placeholder="Enter Product Garage" value="{{ $product->product_garage }}">
+            <div class="product_garage-error text-danger error d-none "></div>
         </div>
+        
         <div class="form-group">
-            <label for="phone">Phone</label>
-            <input name="phone" type="text" class="form-control" id="phone" placeholder="Enter phone" value="{{ $supplier->phone }}">
-            <div class="phone-error text-danger error d-none "></div>
+            <label for="product_route">Product Route</label>
+            <input name="product_route" type="text" class="form-control" id="product_route" placeholder="Enter Product Route" value="{{ $product->product_route }}">
+            <div class="product_route-error text-danger error d-none "></div>
         </div>
+
         <div class="form-group">
-            <label for="adress">Adress</label>
-            <input name="adress" type="text" class="form-control" id="adress" placeholder="Enter adress" value="{{ $supplier->adress }}">
-            <div class="adress-error text-danger error d-none "></div>
-        </div>
-        <div class="form-group">
-            <label for="type">Supplier Type</label>
-            <select class="form-control" id="type" name="type">
-              <option selected >Select Type</option>
-              <option value="1"{{ $supplier->type == 1 ? 'selected' : '' }}>Distrubutor</option>
-              <option value="2"{{ $supplier->type == 2 ? 'selected' : '' }}>Whole Seller</option>
-              <option value="3"{{ $supplier->type == 3 ? 'selected' : '' }}>Brochure</option>
+            <label for="sup_id">Supplier</label>
+            <select class="form-control" id="sup_id" name="sup_id">
+
+              <option selected disabled>Select Supplier</option>
+              @forelse ($suppliers as  $supplier)
+              <option {{ $product->sup_id == $supplier->id ? 'selected' : '' }} value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+              @empty
+              
+              @endforelse            
+
             </select>
-            <div class="type-error text-danger error d-none "></div>
+            <div class="sup_id-error text-danger error d-none "></div>
 
           </div>
+
         <div class="form-group">
-            <label for="photo">Photo</label>
-            <input name="photo" type="file" class="form-control" id="photo" >
-            <img style="height:90px;margin-top:15px" src="{{ asset('uploads/Suppliers/'. $supplier->photo) }}" alt="">
-            <div class="photo-error text-danger error d-none "></div>
+            <label for="cat_id">Categorie</label>
+            <select class="form-control" id="cat_id" name="cat_id">
+
+              <option selected disabled>Select Categorie</option>
+              @forelse ($categories as  $categorie)
+              <option {{ $product->cat_id == $categorie->id ? 'selected' : '' }}  value="{{ $categorie->id }}">{{ $categorie->cate_name }}</option>
+              @empty
+              @endforelse            
+
+            </select>
+            <div class="cat_id-error text-danger error d-none "></div>
+
+          </div>
+
+        <div class="form-group">
+            <label for="product_image">Product Image</label>
+            <input name="product_image" type="file" class="form-control" id="product_image" >
+            <img style="height:90px;margin-top:15px;margin-bottom:35px;" src="{{ asset('uploads/Products/'. $product->product_image) }}" alt="">
+            <div class="product_image-error text-danger error d-none "></div>
         </div>
+
+
         <div class="form-group">
-            <label for="shop">Shop Name</label>
-            <input name="shop" type="text" class="form-control" id="shop" placeholder="Enter Shop Name" value="{{ $supplier->shop }}">
-            <div class="shop-error text-danger error d-none "></div>
+            <label for="buy_date">Buy Date</label>
+            <input name="buy_date" type="date" class="form-control" id="buy_date" placeholder="Enter Buy Date" value="{{ $product->expire_date }}">
+            <div class="buy_date-error text-danger error d-none "></div>
         </div>
-        {{-- bank Details --}}
+
+
         <div class="form-group">
-            <label for="bank_name">Bank Name</label>
-            <input name="bank_name" type="text" class="form-control" id="bank_name" placeholder="Enter Bank Name" value="{{ $supplier->bank_name }}">
-            <div class="bank_name-error text-danger error d-none "></div>
+            <label for="expire_date">Expiring Date</label>
+            <input name="expire_date" type="date" class="form-control" id="expire_date" placeholder="Enter Expiring Date" value="{{ $product->expire_date }}">
+            <div class="expire_date-error text-danger error d-none "></div>
         </div>
+
+
         <div class="form-group">
-            <label for="branch_name">Branch Name</label>
-            <input name="branch_name" type="text" class="form-control" id="branch_name" placeholder="Enter Branch Name" value="{{ $supplier->branch_name }}">
-            <div class="branch_name-error text-danger error d-none "></div>
+            <label for="buying_price">Buying Price</label>
+            <input name="buying_price" type="text" class="form-control" id="buying_price" placeholder="Enter Buying Price" value="{{ $product->buying_price }}">
+            <div class="buying_price-error text-danger error d-none "></div>
         </div>
+
         <div class="form-group">
-            <label for="account_holder">Account Holder Name</label>
-            <input name="account_holder" type="text" class="form-control" id="account_holder" placeholder="Enter Account Holder Name" value="{{ $supplier->account_holder }}">
-            <div class="account_holder-error text-danger error d-none "></div>
-        </div>
-        <div class="form-group">
-            <label for="account_number">Account Number</label>
-            <input name="account_number" type="text" class="form-control" id="account_number" placeholder="Enter Account Number" value="{{ $supplier->account_number }}">
-            <div class="account_number-error text-danger error d-none "></div>
-        </div>
-        {{--  bank details end --}}
-        <div class="form-group">
-            <label for="city">City</label>
-            <input name="city" type="text" class="form-control" id="city"  placeholder="Enter City" value="{{ $supplier->city }}">
-            <div class="city-error text-danger error d-none "></div>
+            <label for="selling_price">Selling Price</label>
+            <input name="selling_price" type="text" class="form-control" id="selling_price" placeholder="Enter Selling Price" value="{{ $product->selling_price }}">
+            <div class="selling_price-error text-danger error d-none "></div>
         </div>
 
         <button type="submit" class="btn btn-purple waves-effect waves-light">Submit</button>
