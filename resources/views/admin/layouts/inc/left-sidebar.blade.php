@@ -53,6 +53,10 @@
                                 <a href="{{ route('products.index') }}" class="waves-effect {{ Request::is('products') ? 'active' : '' }} "><i class="fa-solid fa-dumpster"></i><span>Products</span></a>
                             </li>
 
+                            <li>
+                                <a href="{{ route('expenses.index') }}" class="waves-effect {{ Request::is('expenses') ? 'active' : '' }} "><i class="fa-solid fa-money-bill-trend-up"></i><span>Exprense</span></a>
+                            </li>
+
 
                         </ul>
                         <div class="clearfix"></div>
