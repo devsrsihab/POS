@@ -33,7 +33,7 @@ Route::middleware(['adminAuth'])->group(function(){
     Route::resource('/advanceSalaries',AdvanceSalaryController::class);
     Route::resource('/categories',CategorieController::class);
     Route::resource('/products',ProductController::class);
-    Route::resource('/expenses',ExpenseController::class);
+    Route::resource('/expenses',ExpenseController::class); 
 });
 
 //Auth
