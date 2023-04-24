@@ -46,7 +46,7 @@
                                                 <td>{{  $advanceSalarie->year }}</td>
                                                 <td>{{  $advanceSalarie->advance_salary }}</td>
                                                 <td>
-                                                    {{ \Carbon\Carbon::parse($advanceSalarie->created_at)->setTimezone('Asia/Dhaka')->format('d F Y - h:i A') }}
+                                                    {{ \Carbon\Carbon::parse($advanceSalarie->created_at)->setTimezone('Asia/Dhaka')->format('d F Y  , h:i A') }}
 
                                                 
                                                 </td>
