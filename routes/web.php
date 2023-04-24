@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\admin\CustomerController;
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\admin\EmployeController;
 use App\Http\Controllers\admin\ExpenseController;
@@ -30,10 +31,11 @@ Route::middleware(['adminAuth'])->group(function(){
     Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
     Route::resource('/employees',EmployeController::class);
     Route::resource('/suppliers',SupplierController::class);
+    Route::resource('/customers',CustomerController::class);
     Route::resource('/advanceSalaries',AdvanceSalaryController::class);
     Route::resource('/categories',CategorieController::class);
     Route::resource('/products',ProductController::class);
-    Route::resource('/expenses',ExpenseController::class); 
+    Route::resource('/expenses',ExpenseController::class);
 });
 
 //Auth
