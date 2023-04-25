@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Models\Expense;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
@@ -51,7 +52,7 @@ class ExpenseController extends Controller
             $expense->details = $request->details;
             $expense->amount  = $request->amount;
             $expense->month   = date('F');
-            $expense->date    = date('d/m/Y');
+            $expense->date    = date('d-m-Y');
             $expense->year    = date('Y');
             $expense->save();
 
@@ -129,4 +130,30 @@ class ExpenseController extends Controller
         
 
     }
+
+
+    // today expenses
+    public function todayExpense($date)
+    {
+        $data['todayExpense'] = DB::Table('expenses')->where('date',$date)->get();
+        $data['today_cost'] = DB::Table('expenses')->where('date',$date)->sum('amount');
+        if ($data['todayExpense']) {
+            return view('admin.expenses.today_expense',$data);
+
+        }      
+    }
+
+    // in this expenses
+    public function thisMonthExpense($month)
+    {
+        $data['thisMonthExpense'] = DB::Table('expenses')->where('month',$month)->get();
+        $data['today_cost'] = DB::Table('expenses')->where('month',$month)->sum('amount');
+
+        if ($data['thisMonthExpense']) {
+            return view('admin.expenses.this_month',$data);
+
+        }      
+    }
+
+
 }

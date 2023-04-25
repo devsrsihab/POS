@@ -25,13 +25,13 @@
    
                     <div class="panel-body mt-5">
                         <div class="row" >
-                            
-                            <div style="display:flex;justify-content:center; margin-bottom:20px" class="expence_button col-md-12 mt-4">
-                          
-                                <a style="margin: 0px 8px 0 8px" href="{{ route('thisMonthExpense',date('F')) }}" class=" btn btn-danger pull-right ">This Month</a>
-                                
-                                <a style="margin: 0px 8px 0 8px" href="{{ route('todayExpense',date('d-m-Y')) }}" class=" btn btn-primary pull-right mr-4">Today</a>
+
+                            <div class="cost_div">
+                                <div class="cost" style="background:#ffff9c;padding: 15px; text-align:center;">
+                                    <h2>Total: {{ $today_cost }} Taka</h2>
+                                </div>
                             </div>
+
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="table-responsive">
                                     <table class="table table-responsive-md table-hover">
@@ -45,9 +45,9 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse ($expenses as $expense)
+                                            @forelse ($thisMonthExpense as $key => $expense)
                                                 <tr>
-                                                    <td>{{ $expense->id }}</td>
+                                                    <td>{{ ++$key }}</td>
                                                     <td>{{ $expense->amount }}</td>
                                                     <td>{{ $expense->details }}</td>
                                                     <td>{{ 
