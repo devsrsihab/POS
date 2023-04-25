@@ -46,6 +46,15 @@
         <![endif]-->
 
         <script src="{{ asset('assets/js/modernizr.min.js') }}"></script>
+        <style>
+            span.collapsed_icon {
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    left: 15px;
+    top: -6px;
+}
+        </style>
         
     </head>
 

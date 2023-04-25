@@ -16,8 +16,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading mb-4 " >
-                        <h3 class="panel-title pull-left">Expenses</h3>
+                    <div class="panel-heading mb-4 " style="margin-bottom: 15px">
+                        <a href="{{ route('thisMonthExpense',date('F')) }}" class="btn btn-warning pull-left"> This Month Expense</a>
+
                         <a title="Create" formActionUrl="{{ route('expenses.store') }}"
                             href="{{ route('expenses.create') }}" class="bootModal btn btn-primary pull-right">Add Expenses</a>
                     </div>
@@ -28,7 +29,7 @@
 
                             <div class="cost_div">
                                 <div class="cost" style="background:#ffff9c;padding: 15px; text-align:center;">
-                                    <h2>Total: {{ $today_cost }} Taka</h2>
+                                    <h2>Today Total: ৳{{ $today_cost }}</h2>
                                 </div>
                             </div>
 
