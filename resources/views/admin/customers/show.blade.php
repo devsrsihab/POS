@@ -90,6 +90,10 @@
         </div>
 
     </div>
+
+    <div class="button-div text-right">
+        <button type="button" class="bootbox-close-button  btn btn-danger">Close</button>
+    </div>
 </div>
 </div>
 </div>

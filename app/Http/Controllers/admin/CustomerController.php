@@ -40,8 +40,7 @@ class CustomerController extends Controller
             'name'           => 'required|string',
             'phone'          => 'required|numeric|digits:11',
             'email'          => 'required|email|unique:Suppliers',
-            'adress'         => 'required|string|max:100',
-          
+            'adress'         => 'required|string|max:100',          
             'photo'          => 'required|image|mimes:jpeg,png,jpg|max:2048', // jpeg,png,jpg and max s 2mb
             'shop'           => 'required|string',
             'bank_name'      => 'required|string',
@@ -123,7 +122,6 @@ class CustomerController extends Controller
             'phone'          => 'required|numeric|digits:11',
             'email'          => 'required|email|unique:Customers,email,'.$id,
             'adress'         => 'required|string|max:100',
-            
             'photo'          => 'image|mimes:jpeg,png,jpg|max:2048', // jpeg,png,jpg and max s 2mb
             'shop'           => 'required|string',
             'bank_name'      => 'required|string',

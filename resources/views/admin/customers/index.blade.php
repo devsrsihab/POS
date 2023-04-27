@@ -30,11 +30,7 @@
                                                 <th>ID</th>
                                                 <th>Name</th>
                                                 <th>Phone</th>
-                                                <th>Email</th>
-                                                <th>Adress</th>
-                                                <th>Shop Name</th>
                                                 <th>Photo</th>
-                                                <th>City</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -45,13 +41,9 @@
                                                 <td>{{  $customer->id }}</td>
                                                 <td>{{  $customer->name }}</td>
                                                 <td>{{  $customer->phone }}</td>
-                                                <td>{{  $customer->email }}</td>
-                                                <td>{{  $customer->adress }}</td>
-                                                <td>{{ $customer->shop }}</td>
                                                 
                                                 <td><img style="height: 35px; object-fit:cover" src="{{ asset('uploads/customers/'.$customer->photo) }}" alt="customer-photo"></td>
                 
-                                                <td>{{ $customer->city }}</td>
                                                 <td>
                                                 <a title="Show" href="{{ route('customers.show',$customer->id) }}" class="bootModal btn btn-primary"><i class="fa-solid fa-eye"></i></a>
 
@@ -160,10 +152,12 @@
                           $('.phone-error').text(response.errors.phone);
                           $('.email-error').text(response.errors.email);
                           $('.adress-error').text(response.errors.adress);
-                          $('.experience-error').text(response.errors.experience);
                           $('.photo-error').text(response.errors.photo);
-                          $('.salary-error').text(response.errors.salary);
-                          $('.vacation-error').text(response.errors.vacation);
+                          $('.shop-error').text(response.errors.shop);
+                          $('.bank_name-error').text(response.errors.bank_name);
+                          $('.branch_name-error').text(response.errors.branch_name);
+                          $('.account_holder-error').text(response.errors.account_holder);
+                          $('.account_number-error').text(response.errors.account_number);
                           $('.city-error').text(response.errors.city);
                             
                         }
