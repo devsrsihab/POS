@@ -56,6 +56,7 @@
                             <li class="has_sub">
                                 <a href="{{ route('expenses.index') }}" class="waves-effect {{ Request::is('expenses') ? 'active' : '' }}"><i class="fa-solid fa-money-bill-trend-up"></i> <span> Exprense </span> <span class="collapsed_icon"><i class="fa-solid fa-chevron-right"></i></span></a>
                                 <ul class="list-unstyled" style="display: none">
+                                    <li><a href="{{ route('expenses.index') }}">All Expense</a></li>
                                     <li><a href="{{ route('thisMonthExpense',date('F')) }}">This Month </a></li>
                                     <li><a href="{{ route('todayExpense',date('d-m-Y')) }}">Today</a></li>
                                 </ul>
