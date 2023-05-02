@@ -36,7 +36,8 @@ Route::middleware(['adminAuth'])->group(function(){
     Route::resource('/categories',CategorieController::class);
     Route::resource('/products',ProductController::class);
     Route::GET('/todayExpense/{date}',[ExpenseController::class,'todayExpense'])->name('todayExpense');
-    Route::GET('/thisMonthExpense/{month}',[ExpenseController::class,'thisMonthExpense'])->name('thisMonthExpense');
+    Route::GET('/monthlyExpense/{month}',[ExpenseController::class,'monthlyExpense'])->name('monthlyExpense');
+    Route::GET('/yearlyExpense/{year}',[ExpenseController::class,'yearlyExpense'])->name('yearlyExpense');
     Route::resource('/expenses',ExpenseController::class);
 });
 

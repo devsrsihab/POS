@@ -14,6 +14,6 @@
 
 
         <button type="button" class="btn  bootbox-close-button  btn-danger waves-effect waves-light">Cancel</button>
-        <button type="submit" class="btn btn-purple waves-effect waves-light">Save</button>
+        <button id="submitButton" type="submit" class="btn btn-purple waves-effect waves-light">Save</button>
     </form>
 </div><!-- panel-body -->

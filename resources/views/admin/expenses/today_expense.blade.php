@@ -17,8 +17,10 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading mb-4 " style="margin-bottom: 15px">
-                        <a href="{{ route('thisMonthExpense',date('F')) }}" class="btn btn-warning pull-left"> This Month Expense</a>
+                        <a href="{{ route('monthlyExpense',date('F')) }}" class="btn btn-warning pull-left"> This Month Expense</a>
 
+                        <a href="{{ route('expenses.index') }}" style="margin: 0px 10px " class="btn btn-danger pull-left"> All Expense </a>
+                        
                         <a title="Create" formActionUrl="{{ route('expenses.store') }}"
                             href="{{ route('expenses.create') }}" class="bootModal btn btn-primary pull-right">Add Expenses</a>
                     </div>
@@ -140,11 +142,13 @@
             });
 
 
-            // form submit
-            $(document).on('submit', formId, function(e) {
+          // form submit
+          $(document).on('submit', formId, function(e) {
                 e.preventDefault();
-                
 
+                //disabled the button
+                $('#submitButton').prop('disabled', true);
+       
                 // form data object
                 let formData = new FormData($(formId)[0]);
 
@@ -155,10 +159,12 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                        console.log('this is error  block');
+                       
 
                         // show error
                         if (response.status === 400) {
+                            // enabled the button
+                            $('#submitButton').prop('disabled', false);
                             $('.error').html('');
                             $('.error').removeClass('d-none');
                             $('.amount-error').text(response.errors.amount);
@@ -166,6 +172,8 @@
 
 
                         } else {
+                            // enabled the button
+                            $('#submitButton').prop('disabled', false);
                             dialog.modal('hide');
                             $('.error').html('');
                             $('.error').addClass('d-none');
@@ -178,7 +186,13 @@
 
                     }
                 });
+
+
+
+                
             });
+
+
 
             // confirmation delete
             $(document).on('click', '.delete-form', function(e) {
@@ -218,6 +232,7 @@
                                     toastr.success('Employee Successfullly ' + msg +
                                         '!', 'Employee ' + msg + '');
                                     $('.table').load(location.href + ' .table');
+                                    $('.cost_div').load(location.href + ' .cost_div');
 
                                 } else {
 

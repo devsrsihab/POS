@@ -5,10 +5,10 @@
         <!-- Page-Title -->
         <div class="row">
             <div class="col-sm-12">
-                <h4 class="pull-left page-title">Expenses Tables</h4>
+                <h4 class="pull-left page-title">Monthly Expenses </h4>
                 <ol class="breadcrumb pull-right">
                     <li><a href="#">SR.POS</a></li>
-                    <li><a href="#">Expenses Tables</a></li>
+                    <li><a href="#">Monthly Expenses </a></li>
                 </ol>
             </div>
         </div>
@@ -17,7 +17,9 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading mb-4 " style="margin-bottom: 15px">
-                        <a href="{{ route('todayExpense',date('d-m-Y')) }}" class="btn btn-warning pull-left"> Today Expense</a>
+                        <a href="{{ route('todayExpense',date('d-m-Y')) }}" class="btn btn-warning pull-left">Today Expense</a>
+
+                        <a href="{{ route('expenses.index') }}" style="margin: 0px 10px " class="btn btn-danger pull-left"> All Expense </a>
 
                         <a title="Create" formActionUrl="{{ route('expenses.store') }}"
                             href="{{ route('expenses.create') }}" class="bootModal btn btn-primary pull-right">Add Expenses</a>
@@ -29,7 +31,7 @@
 
                             <div class="cost_div">
                                 <div class="cost" style="background:#ffff9c;padding: 15px; text-align:center;">
-                                    <h2>This Month Total: ৳{{ $today_cost }}</h2>
+                                    <h2>{{ request()->segment(2) }} Total: ৳{{ $cost }}</h2>
                                 </div>
                             </div>
 
@@ -46,7 +48,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse ($thisMonthExpense as $key => $expense)
+                                            @forelse ($monthlyExpense as $key => $expense)
                                                 <tr>
                                                     <td>{{ ++$key }}</td>
                                                     <td>{{ $expense->amount }}</td>
@@ -140,11 +142,13 @@
             });
 
 
-            // form submit
-            $(document).on('submit', formId, function(e) {
+          // form submit
+          $(document).on('submit', formId, function(e) {
                 e.preventDefault();
-                
 
+                //disabled the button
+                $('#submitButton').prop('disabled', true);
+       
                 // form data object
                 let formData = new FormData($(formId)[0]);
 
@@ -155,10 +159,12 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                        console.log('this is error  block');
+                       
 
                         // show error
                         if (response.status === 400) {
+                            // enabled the button
+                            $('#submitButton').prop('disabled', false);
                             $('.error').html('');
                             $('.error').removeClass('d-none');
                             $('.amount-error').text(response.errors.amount);
@@ -166,6 +172,8 @@
 
 
                         } else {
+                            // enabled the button
+                            $('#submitButton').prop('disabled', false);
                             dialog.modal('hide');
                             $('.error').html('');
                             $('.error').addClass('d-none');
@@ -178,7 +186,12 @@
 
                     }
                 });
+
+
+
+                
             });
+
 
             // confirmation delete
             $(document).on('click', '.delete-form', function(e) {
@@ -218,6 +231,7 @@
                                     toastr.success('Employee Successfullly ' + msg +
                                         '!', 'Employee ' + msg + '');
                                     $('.table').load(location.href + ' .table');
+                                    $('.cost_div').load(location.href + ' .cost_div');
 
                                 } else {
 

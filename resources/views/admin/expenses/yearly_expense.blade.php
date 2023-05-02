@@ -5,10 +5,10 @@
         <!-- Page-Title -->
         <div class="row">
             <div class="col-sm-12">
-                <h4 class="pull-left page-title">Expenses </h4>
+                <h4 class="pull-left page-title">Yearly Expenses</h4>
                 <ol class="breadcrumb pull-right">
                     <li><a href="#">SR.POS</a></li>
-                    <li><a href="#">Expenses </a></li>
+                    <li><a href="#">Yearly Expenses</a></li>
                 </ol>
             </div>
         </div>
@@ -16,8 +16,11 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading mb-4 " >
-                        <h3 class="panel-title pull-left">Expenses</h3>
+                    <div class="panel-heading mb-4 " style="margin-bottom: 15px">
+                        <a href="{{ route('todayExpense',date('d-m-Y')) }}" class="btn btn-warning pull-left"> Today Expense</a>
+
+                        <a href="{{ route('expenses.index') }}" style="margin: 0px 10px " class="btn btn-danger pull-left"> All Expense </a>
+
                         <a title="Create" formActionUrl="{{ route('expenses.store') }}"
                             href="{{ route('expenses.create') }}" class="bootModal btn btn-primary pull-right">Add Expenses</a>
                     </div>
@@ -25,34 +28,11 @@
    
                     <div class="panel-body mt-5">
                         <div class="row" >
-                            
-                            <div style="display:flex;justify-content:space-evenly; margin:20px 20px" class="expence_button col-md-12 mt-4">
-                                
-                                @forelse ($expense_months as $key =>  $expense_month )
-                
-                                @if ($key % 2 === 0)
-                                <a style="margin: 0px 8px 0 8px" href="{{ route('monthlyExpense',$expense_month) }}" class="btn btn-success pull-right ">{{ date('M',strtotime($expense_month)) }}
 
-                                @if ($expense_month==date('F'))
-                                <span class="badge badge-success">Current</span>
-                                @endif
-                                </a>
-                                @else
-                                <a style="margin: 0px 8px 0 8px" href="{{ route('monthlyExpense',$expense_month) }}" class="btn btn-info pull-right ">{{ date('M',strtotime($expense_month)) }}
-                                
-                                    @if ($expense_month==date('F'))
-                                    <span class="badge badge-success">Current</span>    
-                                    @endif
-                                </a>
-                                @endif
-                                @empty
-                                <a style="margin: 0px 8px 0 8px" href="" class="btn btn-danger pull-right ">No Data</a>
-                                @endforelse
-             
-                                
-                                
-                                <a style="margin: 0px 8px 0 8px" href="{{ route('todayExpense',date('d-m-Y')) }}" class=" btn btn-warning pull-right mr-4">Today</a>
-                     
+                            <div class="cost_div">
+                                <div class="cost" style="background:#ffff9c;padding: 15px; text-align:center;">
+                                    <h2>{{ request()->segment(2) }} Total: ৳{{ $cost }}</h2>
+                                </div>
                             </div>
 
                             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -68,9 +48,9 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse ($expenses as $expense)
+                                            @forelse ($yearlyExpense as $key => $expense)
                                                 <tr>
-                                                    <td>{{ $expense->id }}</td>
+                                                    <td>{{ ++$key }}</td>
                                                     <td>{{ $expense->amount }}</td>
                                                     <td>{{ $expense->details }}</td>
                                                     <td>{{ 
@@ -152,18 +132,18 @@
                             size: 'large',
 
                         });
-
                         $('.modalContent').html(res)
-                        formId = '#' + $('.modalContent .panel-body').find('form').attr('id');
-                        //formId = "'"+ formId + "'";
+                        formId = '#' + $('.modalContent').find('form').attr('id');
+
+
                     }
                 });
 
             });
-           
 
-            // form submit
-            $(document).on('submit', formId, function(e) {
+
+          // form submit
+          $(document).on('submit', formId, function(e) {
                 e.preventDefault();
 
                 //disabled the button
@@ -211,7 +191,6 @@
 
                 
             });
-        
 
             // confirmation delete
             $(document).on('click', '.delete-form', function(e) {
@@ -251,6 +230,7 @@
                                     toastr.success('Employee Successfullly ' + msg +
                                         '!', 'Employee ' + msg + '');
                                     $('.table').load(location.href + ' .table');
+                                    $('.cost_div').load(location.href + ' .cost_div');
 
                                 } else {
 

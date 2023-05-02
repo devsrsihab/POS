@@ -11,12 +11,34 @@ use Illuminate\Support\Facades\Validator;
 class ExpenseController extends Controller
 {
     /**
+     * month array
+     */
+    public $expense_months = [
+
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December' 
+    ];
+    
+
+    /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data['expenses'] = Expense::all();
-        return view('admin.expenses.index',$data);
+        // dd(date('F'));
+        $expenses = Expense::all();
+        $expense_months = $this->expense_months;
+        return view('admin.expenses.index',compact('expenses','expense_months'));
     }
 
     /**
@@ -36,6 +58,7 @@ class ExpenseController extends Controller
         $validator = Validator::make($request->all(),[
             'details' => 'required|string',
             'amount'  => 'required|numeric',
+            '_token'  => 'required|in:'.csrf_token(),
             
         ]);
         
@@ -58,8 +81,8 @@ class ExpenseController extends Controller
 
             return response()->json([
                 'status' => 200,
-                'message' => 'Expense Created Successfully'
-            ],201);
+                'message' => 'Expense Created Successfully 201'
+            ]);
         }
     }
 
@@ -143,16 +166,27 @@ class ExpenseController extends Controller
         }      
     }
 
-    // in this expenses
-    public function thisMonthExpense($month)
+
+    //ExpenseController
+    public function monthlyExpense($month)
     {
-        $data['thisMonthExpense'] = DB::Table('expenses')->where('month',$month)->get();
-        $data['today_cost'] = DB::Table('expenses')->where('month',$month)->sum('amount');
+        $data['monthlyExpense'] = DB::table('expenses')->where('month',$month)->get();
+        $data['cost'] = DB::table('expenses')->where('month',$month)->sum('amount');
 
-        if ($data['thisMonthExpense']) {
-            return view('admin.expenses.this_month',$data);
+        if ($data['monthlyExpense']) {
+            return view('admin.expenses.monthly_expense',$data);
+        }
+    }
 
-        }      
+    //ExpenseController
+    public function yearlyExpense($year)
+    {
+        $data['yearlyExpense'] = DB::table('expenses')->where('year',$year)->get();
+        $data['cost'] = DB::table('expenses')->where('year',$year)->sum('amount');
+
+        if ($data['yearlyExpense']) {
+            return view('admin.expenses.yearly_expense',$data);
+        }
     }
 
 
